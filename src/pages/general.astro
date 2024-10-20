@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// check if the user already has a resume in the works
+// if they do ask them if they would like to resume,
+// else clear, and start a new instance
+---
+
+<BaseLayout>
+  <h1>General Information</h1>
+  <form>
+    <label
+      >Name:
+      <input type="text" name="name" required />
+    </label>
+    <label
+      >Email:
+      <input type="email" name="email" required />
+    </label>
+    <label
+      >Phone number:
+      <input type="tel" name="phoneNumber" required />
+    </label>
+  </form>
+
+  <button>Next</button>
+</BaseLayout>
+
+<script>
+  import { actions } from "astro:actions";
+  import { navigate } from "astro:transitions/client";
+
+  const form = document.querySelector("form");
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const { error, data } = await actions.setGeneral(formData);
+    if (!error) {
+      localStorage.setItem("general", JSON.stringify(data));
+      navigate("/education");
+    }
+    console.log({ error, data });
+  });
+</script>
