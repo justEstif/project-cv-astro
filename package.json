@@ -13,6 +13,7 @@
     "@astrojs/check": "^0.9.4",
     "@picocss/pico": "^2.0.6",
     "astro": "^4.16.6",
+    "phone": "^3.1.51",
     "typescript": "^5.6.3"
   }
 }
