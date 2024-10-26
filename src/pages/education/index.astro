@@ -1,0 +1,56 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getFormattedDate } from "../../utils/getFormattedDate";
+
+---
+
+<BaseLayout>
+  <h1>Education</h1>
+  <form>
+    <details open>
+      <summary>School 1</summary>
+      <fieldset>
+        <label>
+          School Name:
+          <input type="text" name="schoolName" required />
+        </label>
+        <label>
+          Title of Study:
+          <input type="text" name="titleOfStudy" required />
+        </label>
+        <label>
+          Graduation date:
+          <input
+            type="date"
+            name="graduationDate"
+            max={getFormattedDate()}
+            required
+          />
+        </label>
+      </fieldset>
+    </details>
+    <div role="group">
+      <button type="button" class="addMore">Add More</button>
+    </div>
+    <button type="submit">Next</button>
+  </form>
+</BaseLayout>
+
+<script src="./script.ts"></script>
+
+<script>
+  import { actions } from "astro:actions";
+  import { navigate } from "astro:transitions/client";
+
+  const form = document.querySelector("form");
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const { error, data } = await actions.setEducation(formData);
+    if (!error) {
+      localStorage.setItem("education", JSON.stringify(data));
+      // navigate("/work-experience");
+    }
+    console.log({ error, data });
+  });
+</script>
