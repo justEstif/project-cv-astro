@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getFormattedDate } from "../utils/getFormattedDate";
+---
+
+<BaseLayout>
+  <h1>Work Experience</h1>
+  <form>
+    <label>
+      Company Name:
+      <input type="text" name="companyName" required />
+    </label>
+    <label>
+      Title of Position
+      <input type="text" name="titleOfPosition" required />
+    </label>
+    <label>
+      Responsibilities of Position
+      <textarea name="responsibilitiesOfPosition" rows="4" cols="33"></textarea>
+    </label>
+
+    <label>
+      Start date:
+      <input type="date" name="startDate" max={getFormattedDate()} required />
+    </label>
+
+    <label>
+      End date:
+      <input type="date" name="endDate" max={getFormattedDate()} required />
+    </label>
+
+    <button type="submit">Submit</button>
+  </form>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector("form");
+
+  // Get references to the startDate and endDate inputs
+  const startDateInput = form.querySelector('input[name="startDate"]');
+  const endDateInput = form.querySelector('input[name="endDate"]');
+
+  // Add an event listener on startDate to update the minimum endDate
+  startDateInput.addEventListener("change", () => {
+    endDateInput.min = startDateInput.value;
+  });
+  </script>
+
+<script>
+  import { actions } from "astro:actions";
+  import { navigate } from "astro:transitions/client";
+
+  const form = document.querySelector("form");
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const { error, data } = await actions.setWork(formData);
+    if (!error) {
+      localStorage.setItem("work", JSON.stringify(data));
+      navigate("/preview");
+    }
+    console.log({ error, data });
+  });
+</script>

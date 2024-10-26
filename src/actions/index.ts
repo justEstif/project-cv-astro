@@ -16,13 +16,28 @@ export const server = {
   }),
   setEducation: defineAction({
     accept: "form",
-    // input: z.object({
-    //   name: z.string(),
-    //   email: z.string().email(),
-    //   phoneNumber: z.string().refine((val) => phone(val).isValid),
-    // }),
+    input: z.object({
+      schoolName: z.string(),
+      titleOfStudy: z.string(),
+      graduationDate: z.string().date(),
+    }),
+    handler: async ({ schoolName, titleOfStudy, graduationDate }) => {
+      return { schoolName, titleOfStudy, graduationDate };
+    },
+  }),
+  setWork: defineAction({
+    accept: "form",
+    input: z
+      .object({
+        companyName: z.string(),
+        titleOfPosition: z.string(),
+        responsibilitiesOfPosition: z.string(),
+        startDate: z.string().pipe(z.coerce.date()),
+        endDate: z.string().pipe(z.coerce.date()),
+      })
+      .refine((data) => data.endDate.getTime() < data.startDate.getTime()),
     handler: async (input) => {
-      console.log(input);
+      return input;
     },
   }),
 };

@@ -21,9 +21,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       >Phone number:
       <input type="tel" name="phoneNumber" required />
     </label>
+  <button type="submit">Next</button>
   </form>
 
-  <button>Next</button>
 </BaseLayout>
 
 <script>
@@ -33,6 +33,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   const form = document.querySelector("form");
   form?.addEventListener("submit", async (e) => {
     e.preventDefault();
+    console.log("Submit")
     const formData = new FormData(form);
     const { error, data } = await actions.setGeneral(formData);
     if (!error) {
